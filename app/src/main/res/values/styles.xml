@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TitleStyle">
+        <item name="android:fontFamily">@font/montserratbold</item> <!-- Ruta a tu archivo de fuente en res/font -->
+        <item name="android:textSize">24sp</item> <!-- Tamaño del texto en sp -->
+        <item name="android:textStyle">bold</item> <!-- Tamaño del texto en sp -->
+        <item name="android:textColor">?android:attr/colorBackground</item> <!-- Color del texto -->
+        <!-- Otros atributos de estilo, como negrita, cursiva, etc., pueden ir aquí -->
+    </style>
+
+    <style name="LabelStyle">
+        <item name="android:fontFamily">@font/montserratbold</item> <!-- Ruta a tu archivo de fuente en res/font -->
+        <item name="android:textSize">20sp</item> <!-- Tamaño del texto en sp -->
+        <item name="android:textColor">?android:attr/colorPrimary</item> <!-- Color del texto -->
+        <!-- Otros atributos de estilo, como negrita, cursiva, etc., pueden ir aquí -->
+    </style>
+
+    <style name="ButtonFloatingStyle">
+        <item name="android:tint">?android:attr/colorPrimary</item> <!-- Ruta a tu archivo de fuente en res/font -->
+        <!-- Otros atributos de estilo, como negrita, cursiva, etc., pueden ir aquí -->
+    </style>
+
+
+</resources>
