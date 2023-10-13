@@ -16,7 +16,7 @@ public class DatabaseManager {
             StrictMode.setThreadPolicy(policy);
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
 
-            String url = "jdbc:jtds:sqlserver://192.168.44.68;databaseName=OK01;user=sa;password=nava2012;";
+            String url = "jdbc:jtds:sqlserver://10.1.19.2;databaseName=OK01;user=sa;password=nava2012;";
             conn = DriverManager.getConnection(url);
             Toast.makeText(context,"Conexión establecida.",Toast.LENGTH_SHORT).show();
         } catch (Exception e) {

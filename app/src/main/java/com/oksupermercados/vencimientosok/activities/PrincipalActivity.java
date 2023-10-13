@@ -12,8 +12,11 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.oksupermercados.vencimientosok.R;
 import com.oksupermercados.vencimientosok.connections.DatabaseManager;
 
@@ -43,6 +46,9 @@ public class PrincipalActivity extends AppCompatActivity {
 
         final EditText code = dialogLayout.findViewById(R.id.busqueda);
         final EditText expDate = dialogLayout.findViewById(R.id.vencimiento);
+        final TextInputLayout textInputLayout = dialogLayout.findViewById(R.id.inputLayoutExpDate);
+        final ImageView checkIcon = findViewById(R.id.checkIcon);
+        final TextView validationMessage = findViewById(R.id.validationMessage);
 
         builder.setPositiveButton("Agregar", (dialog, which) -> {
             // Manejar el texto ingresado por el usuario
@@ -51,12 +57,7 @@ public class PrincipalActivity extends AppCompatActivity {
             Toast.makeText(this, textoIngresado, Toast.LENGTH_SHORT).show();
         });
 
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
 
         expDate.addTextChangedListener(new TextWatcher() {
             @Override
@@ -69,6 +70,12 @@ public class PrincipalActivity extends AppCompatActivity {
                 int lenText = expDate.getText().toString().replace("/","").length();
 
                 expDate.setTextColor(Color.BLACK);
+                textInputLayout.setErrorEnabled(false);
+
+                //checkIcon.setVisibility(View.VISIBLE);
+//                validationMessage.setVisibility(View.VISIBLE);
+                validationMessage.setText("Correcto");
+
 
                 if ((lenText == 3 || lenText == 5) && i2 == 1){
                     String segOne = expDate.getText().subSequence(0,expDate.getText().length()-1).toString();
@@ -86,31 +93,25 @@ public class PrincipalActivity extends AppCompatActivity {
                 if (lenText == 6 && i2 == 1){
                     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yy");
 
-                    int day = 0;
-                    int month = 0;
-                    int year = 0;
-
-                    day = Integer.parseInt(expDate.getText().subSequence(1,3).toString());
-                    month = Integer.parseInt(expDate.getText().subSequence(4,6).toString());
-                    year = Integer.parseInt(expDate.getText().subSequence(7,8).toString()) + 2000;
-
-                    Toast.makeText(PrincipalActivity.this, day + ":" + month + ":" + year, Toast.LENGTH_SHORT).show();
-
-                    LocalDate date = LocalDate.of(year, month,day);
+                    int day = Integer.parseInt(expDate.getText().subSequence(0,2).toString());
+                    int month = Integer.parseInt(expDate.getText().subSequence(3,5).toString());
+                    int year = Integer.parseInt(expDate.getText().subSequence(6,8).toString()) + 2000;
 
                     try {
-                        LocalDate ld = LocalDate.parse(expDate.getText(),dtf);
-                        Date dateValidate = Date.valueOf(ld.toString());
 
-                        Toast.makeText(PrincipalActivity.this, dateValidate.toString(), Toast.LENGTH_SHORT).show();
+                        LocalDate date = LocalDate.of(year, month,day);
+                        Toast.makeText(PrincipalActivity.this, date.toString(), Toast.LENGTH_SHORT).show();
 
                     } catch (Exception e) {
+
+                        textInputLayout.setErrorEnabled(true);
+                        textInputLayout.setError("Fecha inválida.");
+
                         expDate.setTextColor(Color.RED);
                         Toast.makeText(PrincipalActivity.this, "Fecha inválida.", Toast.LENGTH_SHORT).show();
                     }
-
-
                 }
+
             }
 
             @Override

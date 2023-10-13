@@ -24,14 +24,41 @@
             style="@style/LabelStyle"
             android:text="Búsqueda:"/>
 
+        <com.google.android.material.textfield.TextInputLayout
+
+            android:id="@+id/inputLayoutCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
         <EditText
             android:id="@+id/busqueda"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:hint="EAN/Código"
-            android:inputType="number" />
+            android:inputType="number"
+            android:maxLength="13"/>
+
+            <ImageView
+                android:id="@+id/checkIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/presence_online"
+                android:visibility="gone"
+                android:contentDescription="check icon"/>
+
+            <TextView
+                android:id="@+id/validationMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="231"/>
+<!--                android:visibility="gone"-->
+
+
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -41,16 +68,26 @@
             style="@style/LabelStyle"
             android:text="Fecha de Vencimiento:"/>
 
+        <com.google.android.material.textfield.TextInputLayout
+
+            android:id="@+id/inputLayoutExpDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+
         <EditText
             android:id="@+id/vencimiento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_weight="1"
             android:hint="dd/mm/yy"
             android:inputType="datetime|date"
             android:maxLength="8" />
 
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 
