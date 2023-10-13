@@ -18,6 +18,7 @@ import com.oksupermercados.vencimientosok.R;
 import com.oksupermercados.vencimientosok.connections.DatabaseManager;
 
 import java.sql.Date;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -66,6 +67,9 @@ public class PrincipalActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 int lenText = expDate.getText().toString().replace("/","").length();
+
+                expDate.setTextColor(Color.BLACK);
+
                 if ((lenText == 3 || lenText == 5) && i2 == 1){
                     String segOne = expDate.getText().subSequence(0,expDate.getText().length()-1).toString();
                     String segTwo = String.valueOf(expDate.getText().charAt(expDate.getText().length()-1));
@@ -82,14 +86,26 @@ public class PrincipalActivity extends AppCompatActivity {
                 if (lenText == 6 && i2 == 1){
                     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yy");
 
+                    int day = 0;
+                    int month = 0;
+                    int year = 0;
+
+                    day = Integer.parseInt(expDate.getText().subSequence(1,3).toString());
+                    month = Integer.parseInt(expDate.getText().subSequence(4,6).toString());
+                    year = Integer.parseInt(expDate.getText().subSequence(7,8).toString()) + 2000;
+
+                    Toast.makeText(PrincipalActivity.this, day + ":" + month + ":" + year, Toast.LENGTH_SHORT).show();
+
+                    LocalDate date = LocalDate.of(year, month,day);
+
                     try {
                         LocalDate ld = LocalDate.parse(expDate.getText(),dtf);
                         Date dateValidate = Date.valueOf(ld.toString());
+
                         Toast.makeText(PrincipalActivity.this, dateValidate.toString(), Toast.LENGTH_SHORT).show();
 
                     } catch (Exception e) {
-                        expDate.setBackgroundColor(Color.RED);
-                        expDate.selectAll();
+                        expDate.setTextColor(Color.RED);
                         Toast.makeText(PrincipalActivity.this, "Fecha inválida.", Toast.LENGTH_SHORT).show();
                     }
 
