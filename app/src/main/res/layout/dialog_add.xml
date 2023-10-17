@@ -31,32 +31,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+            android:layout_marginRight="10dp"
+            app:endIconMode="clear_text">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/busqueda"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="EAN/Código"
             android:inputType="number"
-            android:maxLength="13"/>
-
-            <ImageView
-                android:id="@+id/checkIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@android:drawable/presence_online"
-                android:visibility="gone"
-                android:contentDescription="check icon"/>
-
-            <TextView
-                android:id="@+id/validationMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="231"/>
-<!--                android:visibility="gone"-->
-
-
+            android:maxLength="13"
+            app:endIconMode="clear_text"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,10 +60,11 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+            android:layout_marginRight="10dp"
+            app:endIconMode="clear_text">
 
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/vencimiento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,6 +74,32 @@
             android:maxLength="8" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/cancelAddButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                style="@style/ButtonStyle"
+                android:text="Cancelar"
+                />
+            <Button
+                android:id="@+id/addButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                style="@style/ButtonStyle"
+                android:text="Agregar"
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
 

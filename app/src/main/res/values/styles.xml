@@ -16,6 +16,13 @@
         <!-- Otros atributos de estilo, como negrita, cursiva, etc., pueden ir aquí -->
     </style>
 
+    <style name="ButtonStyle">
+        <item name="android:fontFamily">@font/montserratregular</item> <!-- Ruta a tu archivo de fuente en res/font -->
+        <item name="android:textSize">20sp</item> <!-- Tamaño del texto en sp -->
+        <item name="android:textColor">#FFFFFF</item> <!-- Color del texto -->
+        <!-- Otros atributos de estilo, como negrita, cursiva, etc., pueden ir aquí -->
+    </style>
+
     <style name="ButtonFloatingStyle">
         <item name="android:tint">?android:attr/colorPrimary</item> <!-- Ruta a tu archivo de fuente en res/font -->
         <!-- Otros atributos de estilo, como negrita, cursiva, etc., pueden ir aquí -->

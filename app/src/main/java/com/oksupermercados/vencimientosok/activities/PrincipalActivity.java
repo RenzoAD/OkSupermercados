@@ -5,12 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,64 +23,148 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.oksupermercados.vencimientosok.R;
+import com.oksupermercados.vencimientosok.adapters.VencimientosAdapter;
 import com.oksupermercados.vencimientosok.connections.DatabaseManager;
+import com.oksupermercados.vencimientosok.controllers.VencimientoController;
+import com.oksupermercados.vencimientosok.model.Producto;
+import com.oksupermercados.vencimientosok.model.Vencimiento;
 
 import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class PrincipalActivity extends AppCompatActivity {
+    VencimientoController vencimientoController;
+    ColorStateList colorStateList;
+    Producto producto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
 
-        DatabaseManager.getConn(getApplicationContext());
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        List<Vencimiento> vencimientos = vencimientoController.list();
+        VencimientosAdapter vencimientosAdapter = new VencimientosAdapter(vencimientos,this);
+
+        ColorStateList colorStateList = getResources().getColorStateList(R.color.icon_colors);
     }
 
     public void showAddDialog(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Agregar registro");
 
         // Inflar el diseño personalizado para el cuadro de diálogo
         LayoutInflater inflater = getLayoutInflater();
         View dialogLayout = inflater.inflate(R.layout.dialog_add, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogLayout);
+        AlertDialog alertDialog = builder.create();
 
         final EditText code = dialogLayout.findViewById(R.id.busqueda);
         final EditText expDate = dialogLayout.findViewById(R.id.vencimiento);
-        final TextInputLayout textInputLayout = dialogLayout.findViewById(R.id.inputLayoutExpDate);
-        final ImageView checkIcon = findViewById(R.id.checkIcon);
-        final TextView validationMessage = findViewById(R.id.validationMessage);
+        final TextInputLayout textInputLayoutCode = dialogLayout.findViewById(R.id.inputLayoutCode);
+        final TextInputLayout textInputLayoutExpDate = dialogLayout.findViewById(R.id.inputLayoutExpDate);
+        final Button addButton = dialogLayout.findViewById(R.id.addButton);
+        final Button cancelAddButton = dialogLayout.findViewById(R.id.cancelAddButton);
 
-        builder.setPositiveButton("Agregar", (dialog, which) -> {
-            // Manejar el texto ingresado por el usuario
-            String textoIngresado = code.getText().toString();
-            // Haz algo con el texto ingresado
-            Toast.makeText(this, textoIngresado, Toast.LENGTH_SHORT).show();
+
+        addButton.setOnClickListener(view1 -> {
+            String codeSearch = code.getText().toString();
+            String expiresDate = expDate.getText().toString();
+
+            if (textInputLayoutCode.isErrorEnabled()) {
+                Toast.makeText(this, "Error en codigo", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (textInputLayoutExpDate.isErrorEnabled()) {
+                Toast.makeText(this, "Error en fecha", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Toast.makeText(this, codeSearch + "\n" + expiresDate, Toast.LENGTH_SHORT).show();
+            alertDialog.dismiss();
         });
 
-        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+        cancelAddButton.setOnClickListener(view1 -> {
+            alertDialog.dismiss();
+        });
+
+        code.setOnFocusChangeListener((v, hasFocus) -> {
+
+            if (!hasFocus){
+
+                if (code.getText().toString().trim().equals("")){
+                    textInputLayoutCode.setError("El campo es obligatorio.");
+                    return;
+                }
+
+                //Logica de base de datos
+                producto = new Producto();
+                if (producto == null){
+                    textInputLayoutCode.setError("Producto no encontrado.");
+                    return;
+                }
+                textInputLayoutCode.setStartIconDrawable(R.drawable.marcadeverificacion);
+                textInputLayoutCode.setStartIconTintList(colorStateList);
+                textInputLayoutCode.setHelperText("Producto.getName()");
+
+
+            }
+        });
+
+        code.setOnEditorActionListener((textView, i, keyEvent) -> {
+            if (i == EditorInfo.IME_ACTION_NEXT) {
+
+                if (code.getText().toString().trim().equals("")) {
+                    textInputLayoutCode.setError("El campo es obligatorio.");
+                    code.selectAll();
+                    return true;
+                }
+
+                //Logica de base de datos
+                producto = new Producto();
+                if (producto == null) {
+                    textInputLayoutCode.setError("Producto no encontrado.");
+                    code.selectAll();
+                    return true;
+                }
+
+            }
+            textInputLayoutCode.setStartIconDrawable(R.drawable.marcadeverificacion);
+            textInputLayoutCode.setStartIconTintList(colorStateList);
+            textInputLayoutCode.setHelperText("Producto.getName()");
+            return false;
+        });
+
+
+        code.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                textInputLayoutCode.setStartIconDrawable(null);
+                textInputLayoutCode.setErrorEnabled(false);
+                textInputLayoutCode.setHelperTextEnabled(false);
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
 
         expDate.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 int lenText = expDate.getText().toString().replace("/","").length();
 
                 expDate.setTextColor(Color.BLACK);
-                textInputLayout.setErrorEnabled(false);
-
-                //checkIcon.setVisibility(View.VISIBLE);
-//                validationMessage.setVisibility(View.VISIBLE);
-                validationMessage.setText("Correcto");
-
+                textInputLayoutExpDate.setErrorEnabled(false);
+                textInputLayoutExpDate.setStartIconDrawable(null);
 
                 if ((lenText == 3 || lenText == 5) && i2 == 1){
                     String segOne = expDate.getText().subSequence(0,expDate.getText().length()-1).toString();
@@ -100,27 +189,25 @@ public class PrincipalActivity extends AppCompatActivity {
                     try {
 
                         LocalDate date = LocalDate.of(year, month,day);
-                        Toast.makeText(PrincipalActivity.this, date.toString(), Toast.LENGTH_SHORT).show();
+                        textInputLayoutExpDate.setStartIconDrawable(R.drawable.marcadeverificacion);
+                        textInputLayoutExpDate.setStartIconTintList(colorStateList);
+//                        Toast.makeText(PrincipalActivity.this, date.toString(), Toast.LENGTH_SHORT).show();
 
                     } catch (Exception e) {
 
-                        textInputLayout.setErrorEnabled(true);
-                        textInputLayout.setError("Fecha inválida.");
-
+                        textInputLayoutExpDate.setError("Fecha inválida.");
                         expDate.setTextColor(Color.RED);
-                        Toast.makeText(PrincipalActivity.this, "Fecha inválida.", Toast.LENGTH_SHORT).show();
                     }
                 }
 
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
+            public void afterTextChanged(Editable editable) {}
         });
 
-        builder.show();
+        alertDialog.show();
+        code.requestFocus();
     }
 
     public void CalendarSelector(View view) {
