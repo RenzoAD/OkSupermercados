@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,19 +48,24 @@ public class VencimientosAdapter extends RecyclerView.Adapter<VencimientosAdapte
 
     public class View extends RecyclerView.ViewHolder {
 
-        TextView codigo;
-        TextView fechaVencimiento;
+        TextView code, expDate;
 
         public View(@NonNull android.view.View itemView) {
             super(itemView);
 
-            codigo = itemView.findViewById(R.id.codigo);
-            fechaVencimiento = itemView.findViewById(R.id.fechaVencimiento);
+            code = itemView.findViewById(R.id.codigo);
+            expDate = itemView.findViewById(R.id.fechaVencimiento);
+
+            itemView.setOnClickListener(view -> {
+
+                Toast.makeText(itemView.getContext(), vencimientos.get(getAdapterPosition()).getCodf(), Toast.LENGTH_SHORT).show();
+
+            });
 
         }
         public void mostrarDatos(Vencimiento vencimiento){
-            codigo.setText(vencimiento.getCodf());
-            fechaVencimiento.setText(vencimiento.getFec_venc().toString());
+            code.setText(vencimiento.getCodf());
+            expDate.setText(vencimiento.getFec_venc().toString());
         }
     }
 }

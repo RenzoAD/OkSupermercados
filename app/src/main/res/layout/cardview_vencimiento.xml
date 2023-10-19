@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:animateLayoutChanges="true"
     app:cardElevation="2dp"
     app:cardCornerRadius="10dp"
     app:cardUseCompatPadding="true">
@@ -10,18 +11,47 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center|left">
 
         <TextView
             android:id="@+id/codigo"
             android:layout_width="100dp"
-            android:layout_height="30dp"
-            android:layout_margin="5dp"/>
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:text="2011233"
+            android:textSize="20sp"
+            android:gravity="center"/>
         <TextView
             android:id="@+id/fechaVencimiento"
-            android:layout_width="100dp"
-            android:layout_height="30dp"
-            android:layout_margin="5dp"/>
+            android:layout_width="110dp"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:text="20/12/23"
+            android:textSize="20sp"
+            android:gravity="center"/>
+        <Space
+            android:layout_width="50dp"
+            android:layout_height="1dp"/>
+        <Button
+            android:id="@+id/updateVencimiento"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="#FFFFFF"
+            android:background="@drawable/editar"
+            />
+
+        <Button
+            android:id="@+id/deleteVencimiento"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="#FFFFFF"
+            android:background="@drawable/borrar"
+            />
 
     </LinearLayout>
 

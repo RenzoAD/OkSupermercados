@@ -1,6 +1,7 @@
 package com.oksupermercados.vencimientosok.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
@@ -19,6 +20,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +56,7 @@ public class PrincipalActivity extends AppCompatActivity {
         vencimientoController = new VencimientoController(this);
 
         recyclerViewVencimiento = findViewById(R.id.recyclerViewVencimientos);
+        recyclerViewVencimiento.setLayoutManager(new LinearLayoutManager(this));
         List<Vencimiento> vencimientos = vencimientoController.list();
         VencimientosAdapter vencimientosAdapter = new VencimientosAdapter(vencimientos,this);
         recyclerViewVencimiento.setAdapter(vencimientosAdapter);
