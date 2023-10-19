@@ -1,6 +1,7 @@
 package com.oksupermercados.vencimientosok.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -36,6 +37,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class PrincipalActivity extends AppCompatActivity {
+
+    RecyclerView recyclerViewVencimiento;
     VencimientoController vencimientoController;
     ColorStateList colorStateList;
     Producto producto;
@@ -48,10 +51,15 @@ public class PrincipalActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
+        vencimientoController = new VencimientoController(this);
+
+        recyclerViewVencimiento = findViewById(R.id.recyclerViewVencimientos);
         List<Vencimiento> vencimientos = vencimientoController.list();
         VencimientosAdapter vencimientosAdapter = new VencimientosAdapter(vencimientos,this);
+        recyclerViewVencimiento.setAdapter(vencimientosAdapter);
 
-        ColorStateList colorStateList = getResources().getColorStateList(R.color.icon_colors);
+
+        colorStateList = getResources().getColorStateList(R.color.icon_colors);
     }
 
     public void showAddDialog(View view) {

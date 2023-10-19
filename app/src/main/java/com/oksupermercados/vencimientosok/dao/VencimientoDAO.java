@@ -3,6 +3,7 @@ package com.oksupermercados.vencimientosok.dao;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.oksupermercados.vencimientosok.connections.DatabaseManager;
 import com.oksupermercados.vencimientosok.model.Vencimiento;
 
@@ -53,7 +54,7 @@ public class VencimientoDAO {
                 }
             }
         } catch (SQLException e) {
-            Toast.makeText(context, "Error al cargar datos.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Error al cargar datos. \n" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         return obj;
     }
